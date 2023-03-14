@@ -17,16 +17,10 @@ class _LoginPageState extends State<LoginPage> {
         Text("Giriş Yap"),
         TextField(
           controller: context.watch<LoginViewModel>().usernameController,
-          onChanged: (value) {
-            print(value);
-          },
           decoration: InputDecoration(labelText: "Email"),
         ),
         TextField(
           controller: context.watch<LoginViewModel>().passwordController,
-          onChanged: (value) {
-            print(value);
-          },
           decoration: InputDecoration(labelText: "Password"),
         ),
         ElevatedButton(
