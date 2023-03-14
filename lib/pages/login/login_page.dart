@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:model_test/view_models/login_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../home/home.dart';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -19,19 +17,21 @@ class _LoginPageState extends State<LoginPage> {
         Text("Giriş Yap"),
         TextField(
           controller: context.watch<LoginViewModel>().usernameController,
+          onChanged: (value) {
+            print(value);
+          },
           decoration: InputDecoration(labelText: "Email"),
         ),
         TextField(
           controller: context.watch<LoginViewModel>().passwordController,
+          onChanged: (value) {
+            print(value);
+          },
           decoration: InputDecoration(labelText: "Password"),
         ),
         ElevatedButton(
-          onPressed: () async {
-            await context.read<LoginViewModel>().login();
-            if (context.read<LoginViewModel>().isLogin) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
-            }
+          onPressed: () {
+            context.read<LoginViewModel>().login();
           },
           child: const Text(
             "Login",
