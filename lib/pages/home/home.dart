@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:model_test/models/user_model.dart';
 import 'package:model_test/pages/profile/profile_page.dart';
 import 'package:model_test/view_models/profile_view_model.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/user_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,9 +18,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context
-          .read<ProfileViewModel>()
-          .getUsers(); // tüm users map listesi getirilir.
+      context.read<ProfileViewModel>().getUsers();
     });
   }
 
@@ -31,42 +30,45 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: context
-                    .watch<ProfileViewModel>()
-                    .users
-                    .length, // tüm listenin uzunluğu
-                itemBuilder: (context, index) {
-                  User user = context
-                      .watch<ProfileViewModel>()
-                      .users[index]; // tüm listenin belli elemanı
-                  return GestureDetector(
-                    onTap: () async {
-                      await context.read<ProfileViewModel>().getUser(
-                          user.id!); // belli elemanın özelliklerini al usera at
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
-                          ));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.network(
-                                user.avatar!,
-                                width: 80,
-                                height: 80,
-                              )),
-                          Text(user.firstName! + " " + user.lastName!),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+              child: Stack(
+                children: [
+                  ListView.builder(
+                      itemCount: context.watch<ProfileViewModel>().users.length,
+                      itemBuilder: (context, index) {
+                        User user =
+                            context.watch<ProfileViewModel>().users[index];
+                        return GestureDetector(
+                            onTap: () async {
+                              await context
+                                  .read<ProfileViewModel>()
+                                  .getUser(user.id!);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfilePage()));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Image.network(
+                                        user!.avatar!,
+                                        width: 80,
+                                        height: 80,
+                                      )),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(user.firstName! + " " + user.lastName!),
+                                ],
+                              ),
+                            ));
+                      }),
+                  if (context.watch<ProfileViewModel>().loading)
+                    Center(child: CircularProgressIndicator())
+                ],
               ),
             ),
             Row(
@@ -83,9 +85,10 @@ class _HomePageState extends State<HomePage> {
                           },
                           child: Text(
                             i.toString(),
-                          )),
+                          ),
+                        ),
               ],
-            )
+            ),
           ],
         ),
       ),

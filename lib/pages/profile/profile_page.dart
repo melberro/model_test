@@ -17,22 +17,20 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Users"),
+        centerTitle: true,
+        title: Text("Profile Page"),
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(user!.avatar!)),
-              Text(user!.id.toString()),
-              Text(user!.firstName!),
-              Text(user!.lastName!),
-              Text(user!.email!),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(user!.avatar!)),
+            Text(user!.firstName!),
+            Text(user!.lastName!),
+            Text(user!.email!),
+          ],
         ),
       ),
     );

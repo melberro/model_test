@@ -1,26 +1,35 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:model_test/services/response_model.dart';
+
+import '../services/services.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController =
+      TextEditingController(text: "eve.holt@reqres.in");
+  TextEditingController passwordController =
+      TextEditingController(text: "cityslicka");
 
-  Future login() async {
+  Services services = Services();
+
+  bool isLogin = false;
+
+  Future<bool> login() async {
     var body = {
       "email": usernameController.text,
       "password": passwordController.text,
     };
-    http.Response response =
-        await http.post(Uri.parse('https://reqres.in/api/login'),
-            // headers: {
-            //   'Content-Type': 'application/json; charset=UTF-8',
-            // },
-            body: body);
+    print(body);
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      print(response.body);
+    ResponseModel response = await services.login(body);
+
+    if (response.success) {
+      print(response.data);
     }
+    isLogin = response.success;
+    return response.success;
   }
 }
