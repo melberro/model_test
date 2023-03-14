@@ -18,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Profile Page"),
+        title: Text("Profile"),
       ),
       body: Center(
         child: Column(
